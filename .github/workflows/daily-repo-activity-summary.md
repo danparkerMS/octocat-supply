@@ -2,7 +2,7 @@
 name: Daily Repo Activity Summary
 description: Generate a daily issue summarizing repository activity in the last 24 hours.
 on:
-  schedule: daily
+  workflow_dispatch:
 permissions:
   contents: read
   issues: read

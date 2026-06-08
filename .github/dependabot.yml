@@ -1,71 +1,67 @@
-version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "frontend"
-      ## Grouping all frontend deps - the team decided they want to update once a week
-    groups:
-      all-frontend:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "npm"
-    directory: "/api"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "backend"
-    ## Separating Dev- and Prod-Dependencies in Backend
-    groups:
-      backend-prod:
-        dependency-type: "production"
-        patterns:
-          - "*"
-      backend-dev:
-        dependency-type: "development"
-        patterns:
-          - "*"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "actions"
-    groups:
-      all-actions:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "docker"
-    directory: "/frontend"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "frontend"
-      - "docker"
-    groups:
-      all-frontend:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "docker"
-    directory: "/api"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "backend"
-      - "docker"
-      - "{{ demo_options.backend }}"
-    groups:
-      all-docker:
-        patterns:
-          - "*"
+- directory: /frontend
+  groups:
+    all-frontend:
+      patterns:
+      - "*"
+  labels:
+  - dependencies
+  - frontend
+  package-ecosystem: npm
+  schedule:
+    interval: weekly
+- directory: /api
+  groups:
+    backend-dev:
+      dependency-type: development
+      patterns:
+      - "*"
+    backend-prod:
+      dependency-type: production
+      patterns:
+      - "*"
+  labels:
+  - dependencies
+  - backend
+  package-ecosystem: npm
+  schedule:
+    interval: weekly
+- directory: /
+  groups:
+    all-actions:
+      patterns:
+      - "*"
+  ignore:
+  - dependency-name: "github/gh-aw-actions/**" # Managed by gh aw compile. Version-locked to the gh-aw compiler; do not bump.
+  labels:
+  - dependencies
+  - actions
+  package-ecosystem: github-actions
+  schedule:
+    interval: weekly
+- directory: /frontend
+  groups:
+    all-frontend:
+      patterns:
+      - "*"
+  labels:
+  - dependencies
+  - frontend
+  - docker
+  package-ecosystem: docker
+  schedule:
+    interval: weekly
+- directory: /api
+  groups:
+    all-docker:
+      patterns:
+      - "*"
+  labels:
+  - dependencies
+  - backend
+  - docker
+  - "{{ demo_options.backend }}"
+  package-ecosystem: docker
+  schedule:
+    interval: weekly
+version: 2
